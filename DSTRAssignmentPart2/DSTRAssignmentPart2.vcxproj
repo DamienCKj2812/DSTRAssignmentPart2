@@ -133,6 +133,7 @@
     <ClCompile Include="Spectator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Array.hpp" />
     <ClInclude Include="Match.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Spectator.hpp" />

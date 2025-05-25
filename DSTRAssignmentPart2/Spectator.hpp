@@ -6,16 +6,16 @@
 
 
 enum SpectatorType {
-    VIP = 1,
-    STREAMER = 2,
-    GENERAL = 3
+    VIP = 1,        // Highest Priority
+    STREAMER = 2,   // Medium Priority
+	GENERAL = 3     // Lowest Priority
 };
 
 class Spectator {
 protected:
     int spectatorID;
     std::string name;
-    SpectatorType type; // Using enum instead of string
+    SpectatorType type; 
 
 public:
     Spectator(int id, const std::string& name, SpectatorType type);

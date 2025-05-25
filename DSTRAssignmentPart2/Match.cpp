@@ -1,8 +1,12 @@
 #include "Match.hpp"
 
-Match::Match(int id, Player* p1, Player* p2, const std::string& stage)
+Match::Match(int id, Player* p1, Player* p2, MatchStage stage)
     : matchID(id), player1(p1), player2(p2), stage(stage), result("Pending"), winner(nullptr) {
-    std::srand(std::time(0)); // Seed random once
+    std::srand(std::time(0)); // Only needs to be done once globally (consider moving to main)
+}
+
+void Match::setResult(const std::string& matchResult) {
+    result = matchResult;
 }
 
 void Match::simulateMatch() {
@@ -14,14 +18,6 @@ void Match::simulateMatch() {
         winner = player2;
         result = player2->getName() + " wins";
     }
-}
-
-void Match::setResult(const std::string& matchResult) {
-    result = matchResult;
-}
-
-Player* Match::getWinner() const {
-    return winner;
 }
 
 int Match::getMatchID() const {
@@ -36,18 +32,28 @@ Player* Match::getPlayer2() const {
     return player2;
 }
 
+Player* Match::getWinner() const {
+    return winner;
+}
+
 std::string Match::getResult() const {
     return result;
 }
 
-std::string Match::getStage() const {
+MatchStage Match::getStage() const {
     return stage;
 }
 
 void Match::display() const {
     std::cout << "Match ID: " << matchID << "\n"
-              << "Stage: " << stage << "\n"
+              << "Stage: " << getStageName(stage) << "\n"
               << "Player 1: " << player1->getName() << " (Rank: " << player1->getRanking() << ")\n"
               << "Player 2: " << player2->getName() << " (Rank: " << player2->getRanking() << ")\n"
-              << "Result: " << result << std::endl;
+              << "Result: " << result << "\n";
+
+    if (winner != nullptr) {
+        std::cout << "Winner: " << winner->getName() << "\n";
+    } else {
+        std::cout << "Winner: Not decided yet.\n";
+    }
 }

@@ -38,5 +38,8 @@
     <ClInclude Include="Spectator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Array.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
