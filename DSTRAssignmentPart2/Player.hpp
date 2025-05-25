@@ -19,6 +19,8 @@ private:
     RegistrationType regType;
 
 public:
+	Player();  // Default constructor
+
     // Constructor
     Player(int id, const std::string& playerName, int playerRanking,
            const std::string& uni, RegistrationType type);

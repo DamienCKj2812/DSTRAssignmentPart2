@@ -1,5 +1,7 @@
 #include "Player.hpp"
 
+Player::Player() : playerID(0), name(""), ranking(0), university(""), regType(REGULAR) {}
+
 Player::Player(int id, const std::string& playerName, int playerRanking, const std::string& uni, RegistrationType type)
     : playerID(id), name(playerName), ranking(playerRanking), university(uni), regType(type) {}
 

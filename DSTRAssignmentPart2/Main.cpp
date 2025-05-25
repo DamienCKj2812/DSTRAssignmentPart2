@@ -1,42 +1,23 @@
+#include "Player.hpp"
+#include "PlayerPriorityQueue.hpp"
 #include <iostream>
-#include "Array.hpp"
 
 int main() {
-    // Test Array with int
-    Array<int> intArr;
+    PlayerPriorityQueue<Player> playerHeap;
 
-    std::cout << "=== Testing push() ===\n";
-    for (int i = 1; i <= 5; ++i) {
-        intArr.push(i * 10);
-        std::cout << "Pushed: " << i * 10 << "\n";
-    }
+    playerHeap.insert(Player(1, "Alice", 2, "APU", EARLY_BIRD));
+    playerHeap.insert(Player(2, "Bob", 3, "UTM", REGULAR));
+    playerHeap.insert(Player(3, "Charlie", 1, "UTAR", WILDCARD));
+    playerHeap.insert(Player(4, "Charles", 5, "UTAR", WILDCARD));
 
-    std::cout << "\n=== Testing get() ===\n";
-    for (int i = 0; i < intArr.size(); ++i) {
-        std::cout << "Index " << i << ": " << intArr.get(i) << "\n";
-    }
+    playerHeap.printHeap();
 
-    std::cout << "\n=== Testing set() ===\n";
-    intArr.set(2, 999);
-    std::cout << "Updated index 2 to 999\n";
-
-    std::cout << "\n=== After set() ===\n";
-    for (int i = 0; i < intArr.size(); ++i) {
-        std::cout << "Index " << i << ": " << intArr.get(i) << "\n";
-    }
-
-    std::cout << "\n=== Testing pop() ===\n";
-    int popped = intArr.pop();
-    std::cout << "Popped: " << popped << "\n";
-
-    std::cout << "\n=== Testing shift() ===\n";
-    int shifted = intArr.shift();
-    std::cout << "Shifted: " << shifted << "\n";
-
-    std::cout << "\n=== Final Array State ===\n";
-    for (int i = 0; i < intArr.size(); ++i) {
-        std::cout << "Index " << i << ": " << intArr.get(i) << "\n";
-    }
+    std::cout << "Top Player:" << std::endl ;
+    while (!playerHeap.isEmpty()) {
+		Player curr = playerHeap.extractTop();
+		curr.display();
+        std::cout << "------------------------------------------------------------" << std::endl ; 
+	}
 
     return 0;
 }

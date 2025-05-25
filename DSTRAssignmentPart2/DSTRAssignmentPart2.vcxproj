@@ -129,12 +129,15 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Match.cpp" />
+    <ClCompile Include="MatchSchedular.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerPriorityQueue.hpp" />
     <ClCompile Include="Spectator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.hpp" />
     <ClInclude Include="Match.hpp" />
+    <ClInclude Include="MatchSchedular.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Spectator.hpp" />
   </ItemGroup>
