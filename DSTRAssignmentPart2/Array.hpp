@@ -49,10 +49,13 @@ Array(const Array& other) {
 		}
 		data[length++] = value;
 	}
+	
+	T& get(int index) {
+		return data[index];  // modifiable
+	}
 
-	T get(int index) const {
-		if (index < 0 || index >= length) return T();
-		return data[index];
+	const T& get(int index) const {
+		return data[index];  // read-only
 	}
 
 	void set(int index, const T& value) {

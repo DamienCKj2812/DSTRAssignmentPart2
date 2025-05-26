@@ -33,6 +33,7 @@ private:
     MatchStage stage;
 
 public:
+    Match();  
     Match(int id, Player* p1, Player* p2, MatchStage stage);
 
     void setResult(const std::string& matchResult);

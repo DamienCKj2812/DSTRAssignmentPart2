@@ -1,5 +1,7 @@
 #include "Match.hpp"
 
+Match::Match() : matchID(0), player1(nullptr), player2(nullptr), winner(nullptr), result("Pending"), stage(QUARTERFINAL) {}
+
 Match::Match(int id, Player* p1, Player* p2, MatchStage stage)
     : matchID(id), player1(p1), player2(p2), stage(stage), result("Pending"), winner(nullptr) {
     std::srand(std::time(0)); // Only needs to be done once globally (consider moving to main)
