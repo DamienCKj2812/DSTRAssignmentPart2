@@ -9,38 +9,34 @@ int main() {
     TournamentRegistration tournament;
 
     // Register players (same as your original list)
-    tournament.registerPlayer(Player(1, "Alice", 5, "APU", EARLY_BIRD));
-    tournament.registerPlayer(Player(2, "Bob", 3, "UM", REGULAR));
-    tournament.registerPlayer(Player(3, "Charlie", 2, "UTAR", WILDCARD));
-    tournament.registerPlayer(Player(4, "David", 7, "UPM", EARLY_BIRD));
-    tournament.registerPlayer(Player(5, "Eve", 1, "USM", WILDCARD));
-    tournament.registerPlayer(Player(6, "Frank", 8, "MMU", REGULAR));
-    tournament.registerPlayer(Player(7, "Grace", 4, "TARUC", EARLY_BIRD));
-    tournament.registerPlayer(Player(8, "Henry", 6, "HELP", REGULAR));
+	tournament.registerPlayer(Player(1,  "Alice",   5,  "APU",     EARLY_BIRD));
+	tournament.registerPlayer(Player(2,  "Bob",     3,  "UM",      REGULAR));
+	tournament.registerPlayer(Player(3,  "Charlie", 2,  "UTAR",    WILDCARD));
+	tournament.registerPlayer(Player(4,  "David",   7,  "UPM",     EARLY_BIRD));
+	tournament.registerPlayer(Player(5,  "Eve",     1,  "USM",     WILDCARD));
+	tournament.registerPlayer(Player(6,  "Frank",   8,  "MMU",     REGULAR));
+	tournament.registerPlayer(Player(7,  "Grace",   4,  "TARUC",   EARLY_BIRD));
+	tournament.registerPlayer(Player(8,  "Henry",   6,  "HELP",    REGULAR));
+	tournament.registerPlayer(Player(9,  "Isaac",   9,  "INTI",    REGULAR));
+	tournament.registerPlayer(Player(10, "Jasmine", 2,  "UCSI",    WILDCARD));
+	tournament.registerPlayer(Player(11, "Kevin",   3,  "SEGI",    EARLY_BIRD));
+	tournament.registerPlayer(Player(12, "Liam",    6,  "UNIMAS",  REGULAR));
+	tournament.registerPlayer(Player(13, "Mona",    4,  "UITM",    EARLY_BIRD));
+	tournament.registerPlayer(Player(14, "Nathan",  1,  "UKM",     WILDCARD));
+	tournament.registerPlayer(Player(15, "Olivia",  7,  "UUM",     REGULAR));
+	tournament.registerPlayer(Player(16, "Peter",   5,  "UUM",     EARLY_BIRD));
+	tournament.registerPlayer(Player(17, "Queen",   3,  "UNITAR",  WILDCARD));
+	tournament.registerPlayer(Player(18, "Ryan",    2,  "UNIKL",   EARLY_BIRD));
+	tournament.registerPlayer(Player(19, "Sarah",   8,  "UCSI",    REGULAR));
+	tournament.registerPlayer(Player(20, "Tom",     6,  "OUM",     EARLY_BIRD));
 
     tournament.moveToCheckInQueue();
-
-    tournament.moveToCheckInQueue();
-
     tournament.withdrawPlayer("Bob");
 
     tournament.addReplacementPlayer(Player(9, "Walter white", 9, "UTAR", WILDCARD));
 
-    tournament.processCheckIns();
-
-
+    Array<Player> playerList = tournament.processCheckIns(8);
     MatchScheduler scheduler;
-    Array<Player> playerList;
-
-    // Add 8 players (simulate different rankings and types)
-    playerList.push(Player(1, "Alice", 5, "APU", EARLY_BIRD));
-    playerList.push(Player(2, "Bob", 3, "UM", REGULAR));
-    playerList.push(Player(3, "Charlie", 2, "UTAR", WILDCARD));
-    playerList.push(Player(4, "David", 7, "UPM", EARLY_BIRD));
-    playerList.push(Player(5, "Eve", 1, "USM", WILDCARD));
-    playerList.push(Player(6, "Frank", 8, "MMU", REGULAR));
-    playerList.push(Player(7, "Grace", 4, "TARUC", EARLY_BIRD));
-    playerList.push(Player(8, "Henry", 6, "HELP", REGULAR));
 
     scheduler.setPlayers(playerList);
     scheduler.scheduleInitialMatches("Quarterfinal");
@@ -50,9 +46,8 @@ int main() {
     scheduler.simulateMatches();
 
     // Round 2
-
-Array<Player> winners = scheduler.getWinners();
-std::cout << "Winners this round: " << winners.size() << "\n";
+	Array<Player> winners = scheduler.getWinners();
+	std::cout << "Winners this round: " << winners.size() << "\n";
     scheduler.progressToNextStage("Semifinal");
     std::cout << "\n--- Semifinal ---\n";
     scheduler.simulateMatches();

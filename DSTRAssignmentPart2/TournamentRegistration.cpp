@@ -1,5 +1,5 @@
 #include "TournamentRegistration.hpp"
-#include "PriorityQueueRegistration.hpp"  // << Include your priority queue here
+#include "RegistrationPriorityQueue.hpp"  // << Include your priority queue here
 #include <iostream>
 #include <string>
 
@@ -55,12 +55,17 @@ void TournamentRegistration::addReplacementPlayer(const Player& player) {
     checkInQueue.insert(player);
 }
 
-void TournamentRegistration::processCheckIns() {
+Array<Player> TournamentRegistration::processCheckIns(int count) {
+    Array<Player> checkedInPlayers;
+
     std::cout << "\nProcessing player check-ins...\n";
-    while (!checkInQueue.isEmpty()) {
+    while (!checkInQueue.isEmpty() && count-- > 0) {
         Player curr = checkInQueue.extractTop();
         std::cout << "Checking in player: " << curr.getName() << " ("
-            << registrationTypeToString(curr.getRegistrationType()) << ")\n";
+                  << registrationTypeToString(curr.getRegistrationType()) << ")\n";
+        checkedInPlayers.push(curr);
     }
-    std::cout << "All players checked in successfully.\n";
+
+    std::cout << "Partial check-in completed.\n";
+    return checkedInPlayers;
 }

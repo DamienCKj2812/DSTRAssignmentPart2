@@ -140,7 +140,7 @@
     <ClInclude Include="Match.hpp" />
     <ClInclude Include="MatchScheduler.hpp" />
     <ClInclude Include="Player.hpp" />
-    <ClInclude Include="PriorityQueueRegistration.hpp" />
+    <ClInclude Include="RegistrationPriorityQueue.hpp" />
     <ClInclude Include="Spectator.hpp" />
     <ClInclude Include="TournamentRegistration.hpp" />
   </ItemGroup>
