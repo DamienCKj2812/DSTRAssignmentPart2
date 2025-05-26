@@ -9,7 +9,7 @@
 class TournamentRegistration {
 private:
     RegisterPriorityQueue<Player> registrationQueue;
-    std::queue<Player> checkInQueue;
+    RegisterPriorityQueue<Player> checkInQueue;
 
 public:
     void registerPlayer(const Player& player);
