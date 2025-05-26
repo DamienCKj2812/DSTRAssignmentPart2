@@ -13,7 +13,7 @@ private:
 
     // Lower ranking value = higher priority
     bool isLowerPriority(const T& a, const T& b) {
-        return a.getRanking() < b.getRanking(); 
+        return a.getRanking() < b.getRanking();
     }
 
     void heapifyUp(int index) {

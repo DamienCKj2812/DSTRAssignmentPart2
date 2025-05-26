@@ -7,7 +7,8 @@
 enum RegistrationType {
     WILDCARD = 1,     // Highest priority
     EARLY_BIRD = 2,   // Medium priority
-    REGULAR = 3       // Lowest priority
+    REGULAR = 3,    // Lowest priority
+    LATE=4  
 };
 
 class Player {

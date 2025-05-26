@@ -27,11 +27,14 @@
     <ClCompile Include="Spectator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MatchScheduler.cpp">
+    <ClCompile Include="MatchSchedular.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayerPriorityQueue.hpp">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TournamentRegistration.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,7 +50,13 @@
     <ClInclude Include="Array.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MatchScheduler.hpp">
+    <ClInclude Include="MatchSchedular.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PriorityQueueRegistration.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TournamentRegistration.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

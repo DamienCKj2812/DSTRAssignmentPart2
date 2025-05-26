@@ -133,13 +133,16 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerPriorityQueue.hpp" />
     <ClCompile Include="Spectator.cpp" />
+    <ClCompile Include="TournamentRegistration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.hpp" />
     <ClInclude Include="Match.hpp" />
     <ClInclude Include="MatchScheduler.hpp" />
     <ClInclude Include="Player.hpp" />
+    <ClInclude Include="PriorityQueueRegistration.hpp" />
     <ClInclude Include="Spectator.hpp" />
+    <ClInclude Include="TournamentRegistration.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

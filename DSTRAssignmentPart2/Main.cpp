@@ -42,6 +42,7 @@ std::cout << "Winners this round: " << winners.size() << "\n";
         Array<Player> finalWinner = scheduler.getWinners();
         std::cout << "\n?? Tournament Winner: " << finalWinner.get(0).getName() << "\n";
     }
+	}
 
     return 0;
 }
