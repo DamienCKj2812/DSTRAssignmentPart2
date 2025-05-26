@@ -15,15 +15,15 @@ public:
 	}
 
 
-// Copy Constructor
-Array(const Array& other) {
-	capacity = other.capacity;
-	length = other.length;
-	data = new T[capacity];
-	for (int i = 0; i < length; ++i) {
-		data[i] = other.data[i];
+	// Copy Constructor
+	Array(const Array& other) {
+		capacity = other.capacity;
+		length = other.length;
+		data = new T[capacity];
+		for (int i = 0; i < length; ++i) {
+			data[i] = other.data[i];
+		}
 	}
-}
 
 	// Copy Assignment Operator
 	Array& operator=(const Array& other) {
@@ -48,6 +48,21 @@ Array(const Array& other) {
 			resize();
 		}
 		data[length++] = value;
+	}
+
+
+	// Operator[] for non-const access
+	T& operator[](int index) {
+		if (index >= 0 && index < length)
+			return data[index];
+		throw std::out_of_range("Array index out of bounds");
+	}
+
+	// Operator[] for const access
+	const T& operator[](int index) const {
+		if (index >= 0 && index < length)
+			return data[index];
+		throw std::out_of_range("Array index out of bounds");
 	}
 	
 	T& get(int index) {

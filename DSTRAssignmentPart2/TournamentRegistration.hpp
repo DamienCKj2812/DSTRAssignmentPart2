@@ -1,30 +1,25 @@
 #ifndef TOURNAMENT_REGISTRATION_HPP
 #define TOURNAMENT_REGISTRATION_HPP
 
-#include "Player.hpp"
+#include "Team.hpp"
 #include "RegistrationPriorityQueue.hpp"
 #include <string>
 
 class TournamentRegistration {
 private:
-    RegisterPriorityQueue<Player> registrationQueue;
-    RegisterPriorityQueue<Player> checkInQueue;
+    RegisterPriorityQueue<Team> registrationQueue;  // Now using Team
+    RegisterPriorityQueue<Team> checkInQueue;
+    Array<Team> teams;  // Store all registered teams
 
 public:
-    // Registers a new player into the registration queue (prioritized by registration type)
-    void registerPlayer(const Player& player);
+    void registerTeam(const Team& team);         // Replaces registerPlayer
+    void moveToCheckInQueue();                   // Transfers teams from registration to check-in
+    void withdrawTeam(const std::string& teamName); // Removes team by name
+    Array<Team> processCheckIns(int count);      // Check in N teams by priority
 
-    // Transfers all players from the registration queue to the check-in queue
-    void moveToCheckInQueue();
-
-    // Removes a player by name from the check-in queue (used if they withdraw)
-    void withdrawPlayer(const std::string& playerName);
-
-    // Adds a new player as a replacement into the check-in queue
-    void addReplacementPlayer(const Player& player);
-
-    // Processes all players in the check-in queue (simulates check-in before tournament)
-    Array<Player> processCheckIns(int count);
+    // Team update utilities
+	void replaceTeam(int teamID, const Team& newTeam); // Replace entire team by ID
+	void replacePlayerInTeam(int teamID, int oldPlayerID, const Player& newPlayer); // Already exists
 };
 
 #endif

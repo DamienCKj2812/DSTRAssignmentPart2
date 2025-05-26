@@ -1,19 +1,19 @@
-#ifndef PLAYER_PRIORITY_QUEUE_HPP
-#define PLAYER_PRIORITY_QUEUE_HPP
+#ifndef TEAM_PRIORITY_QUEUE_HPP
+#define TEAM_PRIORITY_QUEUE_HPP
 
 #include "Array.hpp"
 #include "Player.hpp"
 #include <iostream>
 
-// Min-Heap by default (for Player: lower ranking = higher priority)
+// Min-Heap by default (for Team: lower ranking = higher priority)
 template<typename T>
-class PlayerPriorityQueue {
+class TeamPriorityQueue {
 private:
     Array<T> data;
 
     // Lower ranking value = higher priority
     bool isLowerPriority(const T& a, const T& b) {
-        return a.getRanking() < b.getRanking();
+        return a->getRanking() < b->getRanking();
     }
 
     void heapifyUp(int index) {
@@ -87,8 +87,8 @@ public:
     void printHeap() const {
         std::cout << "Heap contents (by ranking):\n";
         for (int i = 0; i < data.size(); ++i) {
-            std::cout << " - " << data.get(i).getName()
-                      << " (Rank: " << data.get(i).getRanking() << ")\n";
+            std::cout << " - " << data.get(i)->getTeamName()
+                      << " (Rank: " << data.get(i)->getRanking() << ")\n";
         }
     }
 };

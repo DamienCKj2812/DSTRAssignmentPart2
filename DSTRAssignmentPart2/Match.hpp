@@ -1,49 +1,49 @@
 #ifndef MATCH_HPP
 #define MATCH_HPP
 
-#include "Player.hpp"
+#include "Team.hpp"
+#include "Array.hpp"
 #include <iostream>
-#include <cstdlib>  
-#include <ctime>   
 
-// Enum for match stage
+// Enum for match stages
 enum MatchStage {
-    QUARTERFINAL,
+    QUALIFIER,
+    GROUP,
     SEMIFINAL,
     FINAL
 };
 
-// Utility function to get stage name
+// Stage name helper
 inline std::string getStageName(MatchStage stage) {
     switch (stage) {
-        case QUARTERFINAL: return "Quarterfinal";
+        case QUALIFIER: return "Qualifier";
+        case GROUP:     return "Group Stage";
         case SEMIFINAL: return "Semifinal";
-        case FINAL: return "Final";
-        default: return "Unknown";
+        case FINAL:     return "Final";
+        default:        return "Unknown";
     }
 }
 
 class Match {
 private:
     int matchID;
-    Player* player1;
-    Player* player2;
-    Player* winner;
-    std::string result;  
+    Array<Team*> teams;
+    Team* winner;
+    std::string result;
     MatchStage stage;
 
 public:
-    Match();  
-    Match(int id, Player* p1, Player* p2, MatchStage stage);
+    Match();
+    Match(int id, const Array<Team*>& teams, MatchStage stage);
 
     void setResult(const std::string& matchResult);
     void simulateMatch();
+    void setWinner(Team* t);
 
     // Getters
     int getMatchID() const;
-    Player* getPlayer1() const;
-    Player* getPlayer2() const;
-    Player* getWinner() const;
+    Array<Team*> getTeams() const;
+    Team* getWinner() const;
     std::string getResult() const;
     MatchStage getStage() const;
 

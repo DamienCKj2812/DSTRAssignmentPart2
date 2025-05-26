@@ -1,68 +1,98 @@
 #include "MatchScheduler.hpp"
-#include "Player.hpp"
-#include "Array.hpp"
 #include "TournamentRegistration.hpp"
+#include "Player.hpp"
+#include "Team.hpp"
+#include "Array.hpp"
 #include <iostream>
+#include <string>
+#include <cstdlib> 
+#include <ctime>  
+
+
+
+Team createTeam(int teamID, const std::string& name, const std::string& university, RegistrationType type, int basePlayerID) {
+    int randomRanking = std::rand() % 100 + 1; // range: 1 to 100
+
+    Team team(teamID, name, randomRanking, university, type); // set ranking randomly
+
+    for (int i = 0; i < 3; ++i) {
+        Player p(basePlayerID + i, name + "_P" + std::to_string(i + 1));
+        team.addPlayer(p);
+    }
+
+    return team;
+}
 
 int main() {
+	std::srand(static_cast<unsigned>(std::time(nullptr))); // seed RNG
+    TournamentRegistration registration;
 
-    TournamentRegistration tournament;
+    std::string universities[] = {
+        "APU", "UM", "TARUC", "UPM", "UTAR", "USM",
+        "UUM", "UKM", "UIA", "UNIMAS", "UMP", "MMU"
+    };
 
-    // Register players (same as your original list)
-	tournament.registerPlayer(Player(1,  "Alice",   5,  "APU",     EARLY_BIRD));
-	tournament.registerPlayer(Player(2,  "Bob",     3,  "UM",      REGULAR));
-	tournament.registerPlayer(Player(3,  "Charlie", 2,  "UTAR",    WILDCARD));
-	tournament.registerPlayer(Player(4,  "David",   7,  "UPM",     EARLY_BIRD));
-	tournament.registerPlayer(Player(5,  "Eve",     1,  "USM",     WILDCARD));
-	tournament.registerPlayer(Player(6,  "Frank",   8,  "MMU",     REGULAR));
-	tournament.registerPlayer(Player(7,  "Grace",   4,  "TARUC",   EARLY_BIRD));
-	tournament.registerPlayer(Player(8,  "Henry",   6,  "HELP",    REGULAR));
-	tournament.registerPlayer(Player(9,  "Isaac",   9,  "INTI",    REGULAR));
-	tournament.registerPlayer(Player(10, "Jasmine", 2,  "UCSI",    WILDCARD));
-	tournament.registerPlayer(Player(11, "Kevin",   3,  "SEGI",    EARLY_BIRD));
-	tournament.registerPlayer(Player(12, "Liam",    6,  "UNIMAS",  REGULAR));
-	tournament.registerPlayer(Player(13, "Mona",    4,  "UITM",    EARLY_BIRD));
-	tournament.registerPlayer(Player(14, "Nathan",  1,  "UKM",     WILDCARD));
-	tournament.registerPlayer(Player(15, "Olivia",  7,  "UUM",     REGULAR));
-	tournament.registerPlayer(Player(16, "Peter",   5,  "UUM",     EARLY_BIRD));
-	tournament.registerPlayer(Player(17, "Queen",   3,  "UNITAR",  WILDCARD));
-	tournament.registerPlayer(Player(18, "Ryan",    2,  "UNIKL",   EARLY_BIRD));
-	tournament.registerPlayer(Player(19, "Sarah",   8,  "UCSI",    REGULAR));
-	tournament.registerPlayer(Player(20, "Tom",     6,  "OUM",     EARLY_BIRD));
+    for (int i = 1; i <= 24; ++i) {
+        RegistrationType type;
+        if (i % 3 == 0) type = WILDCARD;
+        else if (i % 3 == 1) type = EARLY_BIRD;
+        else type = REGULAR;
 
-    tournament.moveToCheckInQueue();
-    tournament.withdrawPlayer("Bob");
+        std::string name = "Team" + std::to_string(i);
+        std::string uni = universities[(i - 1) % 12];
+        registration.registerTeam(createTeam(i, name, uni, type, i * 10));
+    }
 
-    tournament.addReplacementPlayer(Player(9, "Walter white", 9, "UTAR", WILDCARD));
 
-    Array<Player> playerList = tournament.processCheckIns(8);
+	// Create a new team to replace an existing one (e.g. team ID 5)
+	Team replacementTeam = createTeam(5, "ReplacementTeam", "XYZ University", WILDCARD, 1000);
+	registration.replaceTeam(5, replacementTeam);
+
+	// Replace a specific player inside team ID 3 (old player ID = 30, new player = ID 999)
+	Player newPlayer(999, "Substitute_Player");
+	registration.replacePlayerInTeam(3, 30, newPlayer);
+
+    registration.moveToCheckInQueue();
+    Array<Team> readyTeams = registration.processCheckIns(24);
+
+	Array<Team*> teamPointers;
+	for (int i = 0; i < readyTeams.size(); ++i) {
+		teamPointers.push(&readyTeams[i]);  // Take address of each Team
+	}
+
+
     MatchScheduler scheduler;
 
-    scheduler.setPlayers(playerList);
-    scheduler.scheduleInitialMatches("Quarterfinal");
+	scheduler.scheduleQualifierMatches(teamPointers);
+	scheduler.playMatches(scheduler.getQualifierMatches());
+	Array<Team*> qualified = scheduler.getWinners(scheduler.getQualifierMatches());
+	std::cout << "\n=== Qualifier Matches ===\n";
+	scheduler.displayMatches(scheduler.getQualifierMatches());
 
-    // Round 1
-    std::cout << "\n--- Quarterfinal ---\n";
-    scheduler.simulateMatches();
+	scheduler.scheduleGroupStage(qualified);
+	scheduler.playMatches(scheduler.getGroupMatches());
+	Array<Team*> groupWinners = scheduler.getWinners(scheduler.getGroupMatches());
+	std::cout << "\n=== Group Stage Matches ===\n";
+	scheduler.displayMatches(scheduler.getGroupMatches());
 
-    // Round 2
-	Array<Player> winners = scheduler.getWinners();
-	std::cout << "Winners this round: " << winners.size() << "\n";
-    scheduler.progressToNextStage("Semifinal");
-    std::cout << "\n--- Semifinal ---\n";
-    scheduler.simulateMatches();
+	scheduler.scheduleSemifinals(groupWinners);
+	scheduler.playMatches(scheduler.getSemifinalMatches());
+	Array<Team*> semiWinners = scheduler.getWinners(scheduler.getSemifinalMatches());
+	std::cout << "\n=== Semifinal Matches ===\n";
+	scheduler.displayMatches(scheduler.getSemifinalMatches());
 
-    // Round 3
-    scheduler.progressToNextStage("Final");
-    std::cout << "\n--- Final ---\n";
-    scheduler.simulateMatches();
+	scheduler.scheduleFinal(semiWinners);
+	scheduler.playMatches(scheduler.getFinalMatches());
+	Array<Team*> finalWinner = scheduler.getWinners(scheduler.getFinalMatches());
+	std::cout << "\n=== Final Match ===\n";
+	scheduler.displayMatches(scheduler.getFinalMatches());
 
-    // Final Winner
-    if (scheduler.isTournamentOver()) {
-        Array<Player> finalWinner = scheduler.getWinners();
-        std::cout << "\n?? Tournament Winner: " << finalWinner.get(0).getName() << "\n";
+    std::cout << "\nChampion: ";
+    if (finalWinner.size() > 0) {
+        std::cout << finalWinner[0]->getTeamName() << " from " << finalWinner[0]->getUniversity() << "!\n";
+    } else {
+        std::cout << "No winner determined.\n";
     }
-	
 
     return 0;
 }

@@ -1,47 +1,23 @@
 #include "Player.hpp"
 
-Player::Player() : playerID(0), name(""), ranking(0), university(""), regType(REGULAR) {}
+// Default constructor
+Player::Player() : playerID(0), name("Unknown") {}
 
-Player::Player(int id, const std::string& playerName, int playerRanking, const std::string& uni, RegistrationType type)
-    : playerID(id), name(playerName), ranking(playerRanking), university(uni), regType(type) {}
+// Parameterized constructor
+Player::Player(int id, const std::string& name) : playerID(id), name(name) {}
 
+// Getter for playerID
 int Player::getPlayerID() const {
     return playerID;
 }
 
+// Getter for name
 std::string Player::getName() const {
     return name;
 }
 
-int Player::getRanking() const {
-    return ranking;
-}
-
-std::string Player::getUniversity() const {
-    return university;
-}
-
-RegistrationType Player::getRegistrationType() const {
-    return regType;
-}
-
-std::string Player::getRegTypeAsString() const {
-    switch (regType) {
-        case WILDCARD: return "Wildcard";
-        case EARLY_BIRD: return "Early Bird";
-        case REGULAR: return "Regular";
-        default: return "Unknown";
-    }
-}
-
-void Player::setRanking(int newRanking) {
-    ranking = newRanking;
-}
-
+// Display player details
 void Player::display() const {
-    std::cout << "Player ID: " << playerID << "\n"
-              << "Name: " << name << "\n"
-              << "Ranking: " << ranking << "\n"
-              << "University: " << university << "\n"
-              << "Registration Type: " << getRegTypeAsString() << std::endl;
+    std::cout << "Player ID: " << playerID << std::endl;
+    std::cout << "Name     : " << name << std::endl;
 }

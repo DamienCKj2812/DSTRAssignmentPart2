@@ -1,40 +1,46 @@
-
 #ifndef MATCH_SCHEDULER_HPP
-#define MATCH_SCHEDULER_HPP
+#define MATCHSCHEDULER_HPP
 
-#include "Player.hpp"
 #include "Match.hpp"
 #include "Array.hpp"
 
 class MatchScheduler {
 private:
-    Array<Player> players;
-    Array<Match> matches;
+    Array<Match> qualifierMatches;
+    Array<Match> groupMatches;
+    Array<Match> semifinalMatches;
+    Array<Match> finalMatches;
+
     int matchCounter;
 
 public:
     MatchScheduler();
 
-    // Load or register initial players
-    void setPlayers(const Array<Player>& initialPlayers);
+    // Schedule functions
+    void scheduleQualifierMatches(Array<Team*>& teams);
+    void scheduleGroupStage(Array<Team*>& qualifiedTeams);
+    void scheduleSemifinals(Array<Team*>& groupWinners);
+    void scheduleFinal(Array<Team*>& semifinalWinners);
 
-    // Schedule fair matchups based on ranking
-    void scheduleInitialMatches(const std::string& stage);
+    // Run match simulations
+    void playMatches(Array<Match>& matches);
 
-    // Simulate results for the current round
-    void simulateMatches();
+    // Display results
+    void displayMatches(const Array<Match>& matches) const;
 
-    // Progress winners to the next round
-    void progressToNextStage(const std::string& nextStage);
+    // Collect winners from a match array
+    Array<Team*> getWinners(const Array<Match>& matches) const;
 
-    // Show current match bracket
-    void displayBracket() const;
 
-    // Return players who won in this round
-    Array<Player> getWinners() const;
+	const Array<Match>& getQualifierMatches() const;
+	const Array<Match>& getGroupMatches() const;
+	const Array<Match>& getSemifinalMatches() const;
+	const Array<Match>& getFinalMatches() const;
 
-    // Check if competition has a winner
-    bool isTournamentOver() const;
+	Array<Match>& getQualifierMatches();
+	Array<Match>& getGroupMatches();
+	Array<Match>& getSemifinalMatches();
+	Array<Match>& getFinalMatches();
 };
 
 #endif

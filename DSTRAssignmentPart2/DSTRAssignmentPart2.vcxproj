@@ -131,7 +131,8 @@
     <ClCompile Include="Match.cpp" />
     <ClCompile Include="MatchScheduler.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerPriorityQueue.hpp" />
+    <ClCompile Include="Team.cpp" />
+    <ClCompile Include="TeamPriorityQueue.hpp" />
     <ClCompile Include="Spectator.cpp" />
     <ClCompile Include="TournamentRegistration.cpp" />
   </ItemGroup>
@@ -142,6 +143,7 @@
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="RegistrationPriorityQueue.hpp" />
     <ClInclude Include="Spectator.hpp" />
+    <ClInclude Include="Team.hpp" />
     <ClInclude Include="TournamentRegistration.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

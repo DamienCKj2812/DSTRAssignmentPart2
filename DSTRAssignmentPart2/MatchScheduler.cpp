@@ -1,68 +1,149 @@
 #include "MatchScheduler.hpp"
-#include "PlayerPriorityQueue.hpp"
+#include "TeamPriorityQueue.hpp"
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
 
-MatchScheduler::MatchScheduler() : matchCounter(1) {}
-
-void MatchScheduler::setPlayers(const Array<Player>& initialPlayers) {
-    players = initialPlayers;
+// Constructor: initialize match ID counter
+MatchScheduler::MatchScheduler() : matchCounter(1) {
+    std::srand(static_cast<unsigned>(std::time(nullptr))); // Seed RNG once
 }
 
-void MatchScheduler::scheduleInitialMatches(const std::string& stageStr) {
-    MatchStage stage;
-    if (stageStr == "Quarterfinal") stage = QUARTERFINAL;
-    else if (stageStr == "Semifinal") stage = SEMIFINAL;
-    else stage = FINAL;
+// Schedule Qualifier Matches using priority queue (strongest vs strongest)
+void MatchScheduler::scheduleQualifierMatches(Array<Team*>& teams) {
+    TeamPriorityQueue<Team*> pq;
 
-    matches = Array<Match>();  // clear previous matches
-
-    // Use priority queue to ensure pairing by ranking
-    PlayerPriorityQueue<Player> queue;
-    for (int i = 0; i < players.size(); ++i) {
-        queue.insert(players.get(i));
+    // Insert all teams into the priority queue
+    for (int i = 0; i < teams.size(); ++i) {
+        pq.insert(teams[i]);
     }
 
-    while (queue.size() >= 2) {
-        Player p1 = queue.extractTop();
-        Player p2 = queue.extractTop();
-        Match match(matchCounter++, new Player(p1), new Player(p2), stage);
-        matches.push(match);
+    // Schedule matches from strongest vs next strongest
+    while (pq.size() >= 2) {
+        Team* t1 = pq.extractTop();
+        Team* t2 = pq.extractTop();
+
+        Array<Team*> matchTeams;
+        matchTeams.push(t1);
+        matchTeams.push(t2);
+
+        Match match(matchCounter++, matchTeams, QUALIFIER);
+        qualifierMatches.push(match);
+    }
+
+    // Handle odd leftover team 
+    if (!pq.isEmpty()) {
+        Team* t1 = pq.extractTop();
+        Array<Team*> matchTeams;
+        matchTeams.push(t1);
+
+        Match match(matchCounter++, matchTeams, QUALIFIER);
+        match.setResult(t1->getTeamName() + " advances automatically due to odd team count.");
+        match.setWinner(t1);  // Assume automatic win
+        qualifierMatches.push(match);
     }
 }
 
-void MatchScheduler::simulateMatches() {
+// Schedule Group Stage Matches using priority queue (strongest grouped first)
+void MatchScheduler::scheduleGroupStage(Array<Team*>& qualifiedTeams) {
+    const int groupSize = 3;
+
+    // Step 1: Load all teams into the priority queue
+    TeamPriorityQueue<Team*> pq;
+    for (int i = 0; i < qualifiedTeams.size(); ++i) {
+        pq.insert(qualifiedTeams[i]);
+    }
+
+    // Step 2: Form groups of 'groupSize' teams from highest ranked down
+    while (pq.size() > 0) {
+        Array<Team*> group;
+
+        for (int i = 0; i < groupSize && !pq.isEmpty(); ++i) {
+            group.push(pq.extractTop());
+        }
+
+        // Step 3: Create match from group
+        if (group.size() > 0) {
+            Match match(matchCounter++, group, GROUP);
+            groupMatches.push(match);
+        }
+    }
+}
+
+// Schedule Semifinal Matches (2 teams per match)
+void MatchScheduler::scheduleSemifinals(Array<Team*>& groupWinners) {
+    for (int i = 0; i < groupWinners.size(); i += 2) {
+        Array<Team*> pair;
+        if (i + 1 < groupWinners.size()) {
+            pair.push(groupWinners[i]);
+            pair.push(groupWinners[i + 1]);
+        } else {
+            pair.push(groupWinners[i]);
+        }
+        Match match(matchCounter++, pair, SEMIFINAL);
+        semifinalMatches.push(match);
+    }
+}
+
+// Schedule Final Match (2 teams only)
+void MatchScheduler::scheduleFinal(Array<Team*>& semifinalWinners) {
+    if (semifinalWinners.size() >= 2) {
+        Array<Team*> finalists;
+        finalists.push(semifinalWinners[0]);
+        finalists.push(semifinalWinners[1]);
+        Match match(matchCounter++, finalists, FINAL);
+        finalMatches.push(match);
+    }
+}
+
+// Play all matches in a given stage
+void MatchScheduler::playMatches(Array<Match>& matches) {
     for (int i = 0; i < matches.size(); ++i) {
-        Match& match = matches.get(i); 
-        match.simulateMatch();
-        match.display();
-        std::cout << "----------------------------------------\n";
+        matches[i].simulateMatch();
     }
 }
 
-void MatchScheduler::progressToNextStage(const std::string& nextStage) {
-    Array<Player> winners = getWinners();
-    setPlayers(winners);
-    scheduleInitialMatches(nextStage);
-}
-
-void MatchScheduler::displayBracket() const {
-    std::cout << "\n=== Current Match Bracket ===\n";
+// Display all matches in a given stage
+void MatchScheduler::displayMatches(const Array<Match>& matches) const {
     for (int i = 0; i < matches.size(); ++i) {
-        matches.get(i).display();
-        std::cout << "----------------------------\n";
+        matches[i].display();
+        std::cout << "--------------------------\n";
     }
 }
 
-Array<Player> MatchScheduler::getWinners() const {
-    Array<Player> winners;
+// Get winners from a list of matches
+Array<Team*> MatchScheduler::getWinners(const Array<Match>& matches) const {
+    Array<Team*> winners;
     for (int i = 0; i < matches.size(); ++i) {
-        Player* winner = matches.get(i).getWinner();
-        if (winner != nullptr) {
-            winners.push(*winner);
+        if (matches[i].getWinner() != nullptr) {
+            winners.push(matches[i].getWinner());
         }
     }
     return winners;
 }
 
-bool MatchScheduler::isTournamentOver() const {
-    return players.size() == 1;
+const Array<Match>& MatchScheduler::getQualifierMatches() const {
+    return qualifierMatches;
+}
+const Array<Match>& MatchScheduler::getGroupMatches() const {
+    return groupMatches;
+}
+const Array<Match>& MatchScheduler::getSemifinalMatches() const {
+    return semifinalMatches;
+}
+const Array<Match>& MatchScheduler::getFinalMatches() const {
+    return finalMatches;
+}
+
+Array<Match>& MatchScheduler::getQualifierMatches() {
+    return qualifierMatches;
+}
+Array<Match>& MatchScheduler::getGroupMatches() {
+    return groupMatches;
+}
+Array<Match>& MatchScheduler::getSemifinalMatches() {
+    return semifinalMatches;
+}
+Array<Match>& MatchScheduler::getFinalMatches() {
+    return finalMatches;
 }

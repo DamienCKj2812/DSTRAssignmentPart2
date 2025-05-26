@@ -93,7 +93,7 @@ public:
     void printHeap() const {
         std::cout << "Heap contents (by ranking):\n";
         for (int i = 0; i < data.size(); ++i) {
-            std::cout << " - " << data.get(i).getName()
+            std::cout << " - " << data.get(i).getTeamName()
                 << " (Rank: " << data.get(i).getRanking() << ")\n";
         }
     }
