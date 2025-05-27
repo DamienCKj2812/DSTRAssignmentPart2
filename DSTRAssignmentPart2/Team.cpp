@@ -12,6 +12,7 @@ Team::Team(int id, const std::string& name, int teamRanking,
       university(uni), regType(type), playerCount(0) {}
 
 // Getters
+
 int Team::getTeamID() const { return teamID; }
 std::string Team::getTeamName() const { return teamName; }
 int Team::getRanking() const { return ranking; }
@@ -56,3 +57,12 @@ void Team::display() const {
         std::cout << std::endl;
     }
 }
+
+int Team::getPlayerCount() const {
+    return players.size();  // Assuming players is Array<Player>
+}
+
+Player& Team::getPlayer(int index) {
+    return players.get(index);  // Assuming `players` is declared: Array<Player> players;
+}
+

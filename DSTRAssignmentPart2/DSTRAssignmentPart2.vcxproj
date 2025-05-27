@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameLogger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Match.cpp" />
     <ClCompile Include="MatchScheduler.cpp" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.hpp" />
+    <ClInclude Include="GameLogger.hpp" />
     <ClInclude Include="Match.hpp" />
     <ClInclude Include="MatchScheduler.hpp" />
     <ClInclude Include="Player.hpp" />

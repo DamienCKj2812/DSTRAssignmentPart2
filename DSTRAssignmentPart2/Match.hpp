@@ -16,11 +16,11 @@ enum MatchStage {
 // Stage name helper
 inline std::string getStageName(MatchStage stage) {
     switch (stage) {
-        case QUALIFIER: return "Qualifier";
-        case GROUP:     return "Group Stage";
-        case SEMIFINAL: return "Semifinal";
-        case FINAL:     return "Final";
-        default:        return "Unknown";
+    case QUALIFIER: return "Qualifier";
+    case GROUP:     return "Group Stage";
+    case SEMIFINAL: return "Semifinal";
+    case FINAL:     return "Final";
+    default:        return "Unknown";
     }
 }
 
@@ -33,12 +33,12 @@ private:
     MatchStage stage;
 
 public:
-    Match();
-    Match(int id, const Array<Team*>& teams, MatchStage stage);
+    Match();  // Default constructor
+    Match(int id, const Array<Team*>& teams, MatchStage stage);  // Param constructor
 
-    void setResult(const std::string& matchResult);
-    void simulateMatch();
-    void setWinner(Team* t);
+    void simulateMatch();  // Simulate & log battle
+    void setResult(const std::string& matchResult);  // Manually set result
+    void setWinner(Team* t);  // Manually set winner
 
     // Getters
     int getMatchID() const;
@@ -47,7 +47,7 @@ public:
     std::string getResult() const;
     MatchStage getStage() const;
 
-    void display() const;
+    void display() const;  // Print match details
 };
 
 #endif

@@ -7,6 +7,7 @@
 #include <string>
 #include <cstdlib> 
 #include <ctime>  
+#include "GameLogger.hpp"
 
 
 
@@ -93,6 +94,10 @@ int main() {
     } else {
         std::cout << "No winner determined.\n";
     }
+
+	gameLogger.printArrayHistory();  // Logs in order
+	gameLogger.printStackHistory();  // Logs in reverse
+
 
     return 0;
 }

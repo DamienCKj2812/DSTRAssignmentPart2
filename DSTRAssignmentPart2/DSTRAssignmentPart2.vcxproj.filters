@@ -27,13 +27,19 @@
     <ClCompile Include="Spectator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MatchSchedular.cpp">
+    <ClCompile Include="TournamentRegistration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerPriorityQueue.hpp">
+    <ClCompile Include="MatchScheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Team.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TeamPriorityQueue.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="TournamentRegistration.cpp">
+    <ClCompile Include="GameLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,13 +56,19 @@
     <ClInclude Include="Array.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MatchSchedular.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PriorityQueueRegistration.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TournamentRegistration.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchScheduler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RegistrationPriorityQueue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Team.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogger.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

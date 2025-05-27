@@ -26,6 +26,9 @@ public:
     Team();
     Team(int id, const std::string& name, int teamRanking,
          const std::string& uni, RegistrationType type);
+    // Add inside Team class (public)
+    int getPlayerCount() const;
+    Player& getPlayer(int index);  // returns reference to player
 
     int getTeamID() const;
     std::string getTeamName() const;

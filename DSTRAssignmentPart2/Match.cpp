@@ -1,79 +1,132 @@
 #include "Match.hpp"
+#include "GameLogger.hpp"
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
 // Default constructor
 Match::Match()
     : matchID(0), winner(nullptr), result("Not played"), stage(QUALIFIER) {
-    // Seed the random number generator using the current time
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 }
 
 // Parameterized constructor
 Match::Match(int id, const Array<Team*>& teams, MatchStage stage)
     : matchID(id), teams(teams), winner(nullptr), result("Not played"), stage(stage) {
-    // Re-seed random number generator (optional if already seeded once in main)
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 }
 
-// Set the result text manually (for example, for custom match outcomes)
+// Set result manually
 void Match::setResult(const std::string& matchResult) {
     result = matchResult;
 }
 
-// Simulate the match and randomly select one team as the winner
+// Simulate the match and log game results
 void Match::simulateMatch() {
-    if (teams.size() == 0) {
-        result = "No teams in match."; // Handle edge case
+    if (teams.size() != 2) {
+        result = "Match must have exactly two teams.";
         return;
     }
 
-    // Pick a random team index from the list of teams
-    int winnerIndex = std::rand() % teams.size();
-    winner = teams[winnerIndex];
+    Team* team1 = teams.get(0);
+    Team* team2 = teams.get(1);
 
-    // Save the result string with the winner's name
+    int team1Score = 0;
+    int team2Score = 0;
+
+    // Log stats for each player in both teams
+    for (int i = 0; i < team1->getPlayerCount(); ++i) {
+        Player& player = team1->getPlayer(i);
+        int kills = rand() % 10 + 1;
+        int assists = rand() % 6 + 1;
+        int deaths = rand() % 4;
+        team1Score += kills;
+
+        gameLogger.logGameResult(
+            matchID,
+            team1->getTeamName(),
+            player.getName(),
+            team1->getUniversity(),
+            kills, assists, deaths,
+            "TBD"
+        );
+
+    }
+
+    for (int i = 0; i < team2->getPlayerCount(); ++i) {
+        Player& player = team2->getPlayer(i);
+        int kills = rand() % 10 + 1;
+        int assists = rand() % 6 + 1;
+        int deaths = rand() % 4;
+        team2Score += kills;
+
+        gameLogger.logGameResult(
+            matchID,
+            team2->getTeamName(),
+            player.getName(),
+            team2->getUniversity(),
+            kills, assists, deaths,
+            "TBD"
+        );
+    }
+
+    // Determine winner
+    if (team1Score >= team2Score) {
+        winner = team1;
+    }
+    else {
+        winner = team2;
+    }
+
     result = winner->getTeamName() + " won the match.";
+
+    // Update each player's outcome based on team result
+    const Array<GameResult>& history = gameLogger.getHistory();
+    for (int i = 0; i < history.size(); ++i) {
+        GameResult& r = const_cast<GameResult&>(history.get(i)); // to allow editing
+        if (r.matchID == matchID) {
+            if (r.teamName == winner->getTeamName())
+                r.outcome = "Win";
+            else
+                r.outcome = "Loss";
+        }
+    }
 }
 
-// Optional manual override to set the winner directly
+// Optional manual override
 void Match::setWinner(Team* t) {
     winner = t;
 }
 
-// Getter: Return match ID
 int Match::getMatchID() const {
     return matchID;
 }
 
-// Getter: Return list of teams in this match
 Array<Team*> Match::getTeams() const {
     return teams;
 }
 
-// Getter: Return the winner team pointer
 Team* Match::getWinner() const {
     return winner;
 }
 
-// Getter: Return the result description
 std::string Match::getResult() const {
     return result;
 }
 
-// Getter: Return the match stage (Qualifier, Group, etc.)
 MatchStage Match::getStage() const {
     return stage;
 }
 
-// Display full match details to the console
 void Match::display() const {
     std::cout << "Match ID   : " << matchID << std::endl;
     std::cout << "Stage      : " << getStageName(stage) << std::endl;
 
     std::cout << "Teams      : ";
     for (int i = 0; i < teams.size(); ++i) {
-        std::cout << teams[i]->getTeamName() << " (Ranking:" << teams[i]->getRanking() << " From:" << teams[i]->getUniversity() << ")";
+        std::cout << teams[i]->getTeamName()
+            << " (Ranking:" << teams[i]->getRanking()
+            << " From:" << teams[i]->getUniversity() << ")";
         if (i < teams.size() - 1) std::cout << ", ";
     }
     std::cout << std::endl;
@@ -82,7 +135,8 @@ void Match::display() const {
 
     if (winner != nullptr) {
         std::cout << "Winner     : " << winner->getTeamName() << std::endl;
-    } else {
+    }
+    else {
         std::cout << "Winner     : Not decided yet." << std::endl;
     }
 }
