@@ -30,7 +30,10 @@ public:
         const std::string& university,
         int kills, int assists, int deaths,
         const std::string& outcome);
-
+    void pushFinalGameResult(const GameResult& result) {
+        historyArray.push(result);
+        historyStack.push(result);
+    }
     // Print logs
     void printArrayHistory() const;
     void printStackHistory();

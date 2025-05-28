@@ -36,6 +36,9 @@ void Match::simulateTeamBattle() {
     int team1Score = 0;
     int team2Score = 0;
 
+    Array<GameResult> tempResults;
+
+    // Generate logs for both teams (outcome TBD for now)
     for (int i = 0; i < team1->getPlayerCount(); ++i) {
         Player& player = team1->getPlayer(i);
         int kills = rand() % 10 + 1;
@@ -43,12 +46,9 @@ void Match::simulateTeamBattle() {
         int deaths = rand() % 4;
         team1Score += kills;
 
-        gameLogger.logGameResult(matchID,
-            team1->getTeamName(),
-            player.getName(),
-            team1->getUniversity(),
-            kills, assists, deaths,
-            "TBD");
+        GameResult r{ matchID, team1->getTeamName(), player.getName(),
+                     team1->getUniversity(), kills, assists, deaths};
+        tempResults.push(r);
     }
 
     for (int i = 0; i < team2->getPlayerCount(); ++i) {
@@ -58,22 +58,20 @@ void Match::simulateTeamBattle() {
         int deaths = rand() % 4;
         team2Score += kills;
 
-        gameLogger.logGameResult(matchID,
-            team2->getTeamName(),
-            player.getName(),
-            team2->getUniversity(),
-            kills, assists, deaths,
-            "TBD");
+        GameResult r{ matchID, team2->getTeamName(), player.getName(),
+                     team2->getUniversity(), kills, assists, deaths};
+        tempResults.push(r);
     }
 
+    // Decide the winner
     winner = (team1Score >= team2Score) ? team1 : team2;
     result = winner->getTeamName() + " won the match.";
 
-    for (int i = 0; i < gameLogger.getHistory().size(); ++i) {
-        GameResult& r = const_cast<GameResult&>(gameLogger.getHistory().get(i));
-        if (r.matchID == matchID) {
-            r.outcome = (r.teamName == winner->getTeamName()) ? "Win" : "Loss";
-        }
+    // ✅ Now finalize outcome and push to logger
+    for (int i = 0; i < tempResults.size(); ++i) {
+        GameResult& r = tempResults.get(i);
+        r.outcome = (r.teamName == winner->getTeamName()) ? "Win" : "Loss";
+        gameLogger.pushFinalGameResult(r);
     }
 }
 

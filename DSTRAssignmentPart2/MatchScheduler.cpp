@@ -1,4 +1,4 @@
-#include "MatchScheduler.hpp"
+﻿#include "MatchScheduler.hpp"
 #include "TeamPriorityQueue.hpp"
 #include <cstdlib>
 #include <ctime>
@@ -46,29 +46,30 @@ void MatchScheduler::scheduleQualifierMatches(Array<Team*>& teams) {
 
 // Schedule Group Stage Matches using priority queue (strongest grouped first)
 void MatchScheduler::scheduleGroupStage(Array<Team*>& qualifiedTeams) {
-    const int groupSize = 3;
+    groupMatches = Array<Match>();  // Clear previous
 
-    // Step 1: Load all teams into the priority queue
     TeamPriorityQueue<Team*> pq;
     for (int i = 0; i < qualifiedTeams.size(); ++i) {
         pq.insert(qualifiedTeams[i]);
     }
 
-    // Step 2: Form groups of 'groupSize' teams from highest ranked down
-    while (pq.size() > 0) {
-        Array<Team*> group;
+    while (pq.size() >= 2) {
+        Array<Team*> matchTeams;
+        matchTeams.push(pq.extractTop());
+        matchTeams.push(pq.extractTop());
 
-        for (int i = 0; i < groupSize && !pq.isEmpty(); ++i) {
-            group.push(pq.extractTop());
-        }
+        Match match(matchCounter++, matchTeams, GROUP);
+        groupMatches.push(match);
+    }
 
-        // Step 3: Create match from group
-        if (group.size() > 0) {
-            Match match(matchCounter++, group, GROUP);
-            groupMatches.push(match);
-        }
+    // Optional: warning if one team is left without opponent
+    if (pq.size() == 1) {
+        std::cout << "[Warning] One team was left without a match in the group stage.\n";
     }
 }
+
+
+
 
 // Schedule Semifinal Matches (2 teams per match)
 void MatchScheduler::scheduleSemifinals(Array<Team*>& groupWinners) {
@@ -120,7 +121,7 @@ Array<Team*> MatchScheduler::getWinners(const Array<Match>& matches) const {
 // Play all matches in a given stage
 void MatchScheduler::playMatches(Array<Match>& matches) {
     for (int i = 0; i < matches.size(); ++i) {
-        matches[i].simulateTeamBattle();
+        matches[i].simulateTeamBattle();  // ✅ updated to new Match method
     }
 }
 

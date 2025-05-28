@@ -1,4 +1,6 @@
 ﻿#include "GameLogger.hpp"
+#include "Array.hpp"
+#include <string>
 #include <iostream>
 #include <cstdlib>  // rand
 #include <ctime>
