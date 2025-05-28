@@ -102,8 +102,6 @@ int main() {
 	FilterCondition filters[2];
 	filters[0].field = "teamName";
 	filters[0].value = "team10";  
-	filters[1].field = "outcome";
-	filters[1].value = "win"; 
 
 	gameLogger.filterHistory(filters, 2);
 
