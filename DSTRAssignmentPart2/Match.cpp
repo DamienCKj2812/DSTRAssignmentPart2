@@ -1,8 +1,10 @@
 ﻿#include "Match.hpp"
 #include "GameLogger.hpp"
+#include "TimeUtils.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+
 
 std::string getPlayerNameWithHighlight(const std::string& playerName) {
     std::string highlights[] = {"got First Blood", "got Double Kill", "got Triple Kill" ,"got Quadra Kill","got Penta Kill!!!"};
@@ -53,10 +55,11 @@ void Match::simulateTeamBattle() {
         int deaths = rand() % 4;
         team1Score += kills;
 
-        GameResult r{ matchID, team1->getTeamName(),
-                     getPlayerNameWithHighlight(player.getName()),
-                     team1->getUniversity(), kills, assists, deaths };
-        tempResults.push(r);
+		 GameResult r(matchID, team1->getTeamName(),
+					 getPlayerNameWithHighlight(player.getName()),
+					 team1->getUniversity(), kills, assists, deaths,
+					 "", getCurrentTimeString()); // outcome to be set later
+		tempResults.push(r);
     }
 
     for (int i = 0; i < team2->getPlayerCount(); ++i) {
@@ -66,10 +69,11 @@ void Match::simulateTeamBattle() {
         int deaths = rand() % 4;
         team2Score += kills;
 
-        GameResult r{ matchID, team2->getTeamName(),
-                     getPlayerNameWithHighlight(player.getName()),
-                     team2->getUniversity(), kills, assists, deaths };
-        tempResults.push(r);
+		 GameResult r(matchID, team1->getTeamName(),
+					 getPlayerNameWithHighlight(player.getName()),
+					 team1->getUniversity(), kills, assists, deaths,
+					 "", getCurrentTimeString()); // outcome to be set later
+		tempResults.push(r);
     }
 
     // Decide the winner

@@ -146,6 +146,7 @@
     <ClInclude Include="RegistrationPriorityQueue.hpp" />
     <ClInclude Include="Spectator.hpp" />
     <ClInclude Include="Team.hpp" />
+    <ClInclude Include="TimeUtils.hpp" />
     <ClInclude Include="TournamentRegistration.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

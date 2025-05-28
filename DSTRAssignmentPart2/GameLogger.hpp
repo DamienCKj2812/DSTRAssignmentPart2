@@ -4,6 +4,12 @@
 #include <string>
 #include "Array.hpp"
 
+
+struct FilterCondition {
+    std::string field;
+    std::string value;
+};
+
 struct GameResult {
     int matchID;
     std::string teamName;
@@ -13,6 +19,15 @@ struct GameResult {
     int assists;
     int deaths;
     std::string outcome;
+	std::string creationTime;
+
+
+    GameResult() : matchID(0), kills(0), assists(0), deaths(0) {}
+	GameResult(int id, const std::string& team, const std::string& player,
+           const std::string& uni, int k, int a, int d,
+           const std::string& result, const std::string& time)
+    : matchID(id), teamName(team), playerName(player), university(uni),
+      kills(k), assists(a), deaths(d), outcome(result), creationTime(time) {}
 };
 
 
@@ -34,6 +49,7 @@ public:
     }
     void printArrayHistory() const;
     void printStackHistory();
+	void filterHistory(const FilterCondition conditions[], int conditionCount) const;
 
     const Array<GameResult>& getHistory() const;
 

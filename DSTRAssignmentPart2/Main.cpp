@@ -99,5 +99,14 @@ int main() {
 	gameLogger.printStackHistory();  // Logs in reverse
 
 
+	FilterCondition filters[2];
+	filters[0].field = "teamName";
+	filters[0].value = "Team10";
+	filters[1].field = "outcome";
+	filters[1].value = "Win";
+
+	gameLogger.filterHistory(filters, 2);
+
+
     return 0;
 }
