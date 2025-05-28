@@ -5,7 +5,7 @@
 #include "Array.hpp"
 #include <iostream>
 
-// Enum for match stages
+
 enum MatchStage {
     QUALIFIER,
     GROUP,
@@ -13,7 +13,7 @@ enum MatchStage {
     FINAL
 };
 
-// Stage name helper
+
 inline std::string getStageName(MatchStage stage) {
     switch (stage) {
     case QUALIFIER: return "Qualifier";
@@ -33,12 +33,12 @@ private:
     MatchStage stage;
 
 public:
-    Match();  // Default constructor
-    Match(int id, const Array<Team*>& teams, MatchStage stage);  // Param constructor
+    Match();  
+    Match(int id, const Array<Team*>& teams, MatchStage stage);  
 
-    void simulateTeamBattle();  // Simulate & log battle
-    void setResult(const std::string& matchResult);  // Manually set result
-    void setWinner(Team* t);  // Manually set winner
+    void simulateTeamBattle();  
+    void setResult(const std::string& matchResult);  
+    void setWinner(Team* t);  
 
     // Getters
     int getMatchID() const;
@@ -47,7 +47,7 @@ public:
     std::string getResult() const;
     MatchStage getStage() const;
 
-    void display() const;  // Print match details
+    void display() const; 
 };
 
 #endif

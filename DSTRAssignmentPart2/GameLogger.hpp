@@ -4,18 +4,17 @@
 #include <string>
 #include "Array.hpp"
 
-// Struct to store performance per player
 struct GameResult {
     int matchID;
     std::string teamName;
-    std::string playerName;
+    std::string playerName;   
     std::string university;
     int kills;
     int assists;
     int deaths;
     std::string outcome;
-    std::string highlight;
 };
+
 
 class GameLogger {
 private:
@@ -23,7 +22,6 @@ private:
     Array<GameResult> historyStack;
 
 public:
-    // Log a game result
     void logGameResult(int matchID,
         const std::string& teamName,
         const std::string& playerName,
@@ -34,11 +32,9 @@ public:
         historyArray.push(result);
         historyStack.push(result);
     }
-    // Print logs
     void printArrayHistory() const;
     void printStackHistory();
 
-    // Allow Match to access game history
     const Array<GameResult>& getHistory() const;
 
 private:

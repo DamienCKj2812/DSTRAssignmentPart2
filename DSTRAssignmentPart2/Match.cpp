@@ -4,6 +4,13 @@
 #include <ctime>
 #include <iostream>
 
+std::string getPlayerNameWithHighlight(const std::string& playerName) {
+    std::string highlights[] = {"got First Blood", "got Double Kill", "got Triple Kill" ,"got Quadra Kill","got Penta Kill!!!"};
+    int roll = rand() % 5;
+    if (roll == 0) return playerName;  // No highlight
+    return playerName + " (" + highlights[roll] + ")";
+}
+
 // Default constructor
 Match::Match()
     : matchID(0), winner(nullptr), result("Not played"), stage(QUALIFIER) {
@@ -46,8 +53,9 @@ void Match::simulateTeamBattle() {
         int deaths = rand() % 4;
         team1Score += kills;
 
-        GameResult r{ matchID, team1->getTeamName(), player.getName(),
-                     team1->getUniversity(), kills, assists, deaths};
+        GameResult r{ matchID, team1->getTeamName(),
+                     getPlayerNameWithHighlight(player.getName()),
+                     team1->getUniversity(), kills, assists, deaths };
         tempResults.push(r);
     }
 
@@ -58,8 +66,9 @@ void Match::simulateTeamBattle() {
         int deaths = rand() % 4;
         team2Score += kills;
 
-        GameResult r{ matchID, team2->getTeamName(), player.getName(),
-                     team2->getUniversity(), kills, assists, deaths};
+        GameResult r{ matchID, team2->getTeamName(),
+                     getPlayerNameWithHighlight(player.getName()),
+                     team2->getUniversity(), kills, assists, deaths };
         tempResults.push(r);
     }
 
