@@ -132,6 +132,7 @@
     <ClCompile Include="Match.cpp" />
     <ClCompile Include="MatchScheduler.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SpectatorQueue.cpp" />
     <ClCompile Include="Team.cpp" />
     <ClCompile Include="TeamPriorityQueue.hpp" />
     <ClCompile Include="Spectator.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="RegistrationPriorityQueue.hpp" />
     <ClInclude Include="Spectator.hpp" />
+    <ClInclude Include="SpectatorQueue.hpp" />
     <ClInclude Include="Team.hpp" />
     <ClInclude Include="TimeUtils.hpp" />
     <ClInclude Include="TournamentRegistration.hpp" />
