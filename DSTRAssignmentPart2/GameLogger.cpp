@@ -7,6 +7,26 @@
 #include <ctime>
 
 
+bool caseInsensitiveMatch(const std::string& str, const std::string& keyword) {
+    if (keyword.empty()) return true;
+	if (keyword.length() > str.length()) return false;
+
+	for (size_t i = 0; i <= str.length() - keyword.length(); ++i) {
+        bool found = true;
+        for (size_t j = 0; j < keyword.length(); ++j) {
+            char c1 = tolower(str[i + j]);
+            char c2 = tolower(keyword[j]);
+            if (c1 != c2) {
+                found = false;
+                break;
+            }
+        }
+        if (found) return true;
+    }
+    return false;
+}
+
+
 void GameLogger::logGameResult(int matchID,
     const std::string& teamName,
     const std::string& playerName,
@@ -67,11 +87,11 @@ void GameLogger::filterHistory(const FilterCondition conditions[], int condition
             const std::string& field = conditions[j].field;
             const std::string& value = conditions[j].value;
 
-            if (field == "teamName" && r.teamName != value) match = false;
-            else if (field == "playerName" && r.playerName != value) match = false;
-            else if (field == "university" && r.university != value) match = false;
-            else if (field == "outcome" && r.outcome != value) match = false;
-            else if (field == "matchID" && std::to_string(r.matchID) != value) match = false;
+			if (field == "teamName" && !caseInsensitiveMatch(r.teamName, value)) match = false;
+			else if (field == "playerName" && !caseInsensitiveMatch(r.playerName, value)) match = false;
+			else if (field == "university" && !caseInsensitiveMatch(r.university, value)) match = false;
+			else if (field == "outcome" && !caseInsensitiveMatch(r.outcome, value)) match = false;
+			else if (field == "matchID" && !caseInsensitiveMatch(std::to_string(r.matchID), value)) match = false;
 
             if (!match) break;
         }
