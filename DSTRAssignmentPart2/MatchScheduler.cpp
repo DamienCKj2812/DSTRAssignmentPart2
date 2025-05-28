@@ -96,12 +96,7 @@ void MatchScheduler::scheduleFinal(Array<Team*>& semifinalWinners) {
     }
 }
 
-// Play all matches in a given stage
-void MatchScheduler::playMatches(Array<Match>& matches) {
-    for (int i = 0; i < matches.size(); ++i) {
-        matches[i].simulateMatch();
-    }
-}
+
 
 // Display all matches in a given stage
 void MatchScheduler::displayMatches(const Array<Match>& matches) const {
@@ -120,6 +115,13 @@ Array<Team*> MatchScheduler::getWinners(const Array<Match>& matches) const {
         }
     }
     return winners;
+}
+
+// Play all matches in a given stage
+void MatchScheduler::playMatches(Array<Match>& matches) {
+    for (int i = 0; i < matches.size(); ++i) {
+        matches[i].simulateTeamBattle();
+    }
 }
 
 const Array<Match>& MatchScheduler::getQualifierMatches() const {

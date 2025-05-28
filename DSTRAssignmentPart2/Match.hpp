@@ -36,7 +36,7 @@ public:
     Match();  // Default constructor
     Match(int id, const Array<Team*>& teams, MatchStage stage);  // Param constructor
 
-    void simulateMatch();  // Simulate & log battle
+    void simulateTeamBattle();  // Simulate & log battle
     void setResult(const std::string& matchResult);  // Manually set result
     void setWinner(Team* t);  // Manually set winner
 

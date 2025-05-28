@@ -1,4 +1,4 @@
-#include "Match.hpp"
+﻿#include "Match.hpp"
 #include "GameLogger.hpp"
 #include <cstdlib>
 #include <ctime>
@@ -22,9 +22,11 @@ void Match::setResult(const std::string& matchResult) {
 }
 
 // Simulate the match and log game results
-void Match::simulateMatch() {
+// Rename simulateMatch() → simulateTeamBattle()
+void Match::simulateTeamBattle() {
     if (teams.size() != 2) {
         result = "Match must have exactly two teams.";
+        winner = nullptr;
         return;
     }
 
@@ -34,7 +36,6 @@ void Match::simulateMatch() {
     int team1Score = 0;
     int team2Score = 0;
 
-    // Log stats for each player in both teams
     for (int i = 0; i < team1->getPlayerCount(); ++i) {
         Player& player = team1->getPlayer(i);
         int kills = rand() % 10 + 1;
@@ -42,15 +43,12 @@ void Match::simulateMatch() {
         int deaths = rand() % 4;
         team1Score += kills;
 
-        gameLogger.logGameResult(
-            matchID,
+        gameLogger.logGameResult(matchID,
             team1->getTeamName(),
             player.getName(),
             team1->getUniversity(),
             kills, assists, deaths,
-            "TBD"
-        );
-
+            "TBD");
     }
 
     for (int i = 0; i < team2->getPlayerCount(); ++i) {
@@ -60,38 +58,25 @@ void Match::simulateMatch() {
         int deaths = rand() % 4;
         team2Score += kills;
 
-        gameLogger.logGameResult(
-            matchID,
+        gameLogger.logGameResult(matchID,
             team2->getTeamName(),
             player.getName(),
             team2->getUniversity(),
             kills, assists, deaths,
-            "TBD"
-        );
+            "TBD");
     }
 
-    // Determine winner
-    if (team1Score >= team2Score) {
-        winner = team1;
-    }
-    else {
-        winner = team2;
-    }
-
+    winner = (team1Score >= team2Score) ? team1 : team2;
     result = winner->getTeamName() + " won the match.";
 
-    // Update each player's outcome based on team result
-    const Array<GameResult>& history = gameLogger.getHistory();
-    for (int i = 0; i < history.size(); ++i) {
-        GameResult& r = const_cast<GameResult&>(history.get(i)); // to allow editing
+    for (int i = 0; i < gameLogger.getHistory().size(); ++i) {
+        GameResult& r = const_cast<GameResult&>(gameLogger.getHistory().get(i));
         if (r.matchID == matchID) {
-            if (r.teamName == winner->getTeamName())
-                r.outcome = "Win";
-            else
-                r.outcome = "Loss";
+            r.outcome = (r.teamName == winner->getTeamName()) ? "Win" : "Loss";
         }
     }
 }
+
 
 // Optional manual override
 void Match::setWinner(Team* t) {
