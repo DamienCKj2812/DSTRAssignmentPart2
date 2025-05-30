@@ -1,39 +1,40 @@
-#include "Spectator.hpp"
+#include "Spectator.hpp"  
 
 Spectator::Spectator(int id, const std::string& name, SpectatorType type)
-    : spectatorID(id), name(name), type(type), hasStreamingSlot(false) {}
-
-int Spectator::getSpectatorID() const {
-    return spectatorID;
+    : spectatorID(id), name(name), type(type), hasStreamingSlot(false) {
 }
 
-std::string Spectator::getName() const {
-    return name;
-}
+int Spectator::getSpectatorID() const {  
+   return spectatorID;  
+}  
 
-SpectatorType Spectator::getType() const {
-    return type;
-}
+std::string Spectator::getName() const {  
+   return name;  
+}  
 
-bool Spectator::getHasStreamingSlot() const {
-    return hasStreamingSlot;
-}
+SpectatorType Spectator::getType() const {  
+   return type;  
+}  
 
-void Spectator::setHasStreamingSlot(bool value) {
-    hasStreamingSlot = value;
-}
+bool Spectator::getHasStreamingSlot() const {  
+   return hasStreamingSlot;  
+}  
 
-std::string Spectator::getTypeAsString() const {
-    switch (type) {
-        case VIP: return "VIP";
-        case STREAMER: return "Streamer";
-        case GENERAL: return "General Audience";
-        default: return "Unknown";
-    }
-}
+void Spectator::setHasStreamingSlot(bool value) {  
+   hasStreamingSlot = value;  
+}  
 
-void Spectator::display() const {
-    std::cout << "Spectator ID: " << spectatorID << "\n"
-              << "Name: " << name << "\n"
-              << "Type: " << getTypeAsString() << std::endl;
+std::string Spectator::getTypeAsString() const {  
+   switch (type) {  
+       case VIP: return "VIP";  
+       case STREAMER: return "Streamer";  
+       case GENERAL: return "General Audience";  
+       default: return "Unknown";  
+   }  
+}  
+
+void Spectator::display() const {  
+   std::cout << "Spectator ID: " << spectatorID << "\n"  
+             << "Name: " << name << "\n"  
+             << "Type: " << getTypeAsString() << std::endl;  
 }
