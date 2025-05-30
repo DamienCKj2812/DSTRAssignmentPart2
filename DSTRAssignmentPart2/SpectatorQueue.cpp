@@ -31,11 +31,13 @@ int SpectatorPriorityQueue::parent(int i) const { return (i - 1) / 2; }
 int SpectatorPriorityQueue::left(int i) const { return 2 * i + 1; }
 int SpectatorPriorityQueue::right(int i) const { return 2 * i + 2; }
 
-// Restore heap property after insertion (heapify upwards)
+// After you add (push) a new spectator to the heap.
 void SpectatorPriorityQueue::heapifyUp(int idx) {
     // While not at the root and the parent is a lower priority (larger enum value), swap up
     while (idx > 0 && heap[parent(idx)]->getType() > heap[idx]->getType()) {
-        // Swap pointers (no std::swap or STL)
+        // Compares the new node with its parent.
+        // If the new node has higher priority, it swaps them.
+        // This repeats until the heap property is restored.
         Spectator* tmp = heap[idx];
         heap[idx] = heap[parent(idx)];
         heap[parent(idx)] = tmp;
@@ -43,12 +45,14 @@ void SpectatorPriorityQueue::heapifyUp(int idx) {
     }
 }
 
-// Restore heap property after removal (heapify downwards)
+// After you remove (pop) the top of the heap (seat allocation), and replace it with the last item.
 void SpectatorPriorityQueue::heapifyDown(int idx) {
     int n = heap.size();
     while (true) {
         int l = left(idx), r = right(idx), smallest = idx;
-        // Find the child with the smallest priority value (VIP = 1 is smallest)
+        //Compares the new root with its children.
+        //If a child has higher priority, it swaps with the smallest child.
+        //This repeats until the heap property is restored.
         if (l < n && heap[l]->getType() < heap[smallest]->getType()) smallest = l;
         if (r < n && heap[r]->getType() < heap[smallest]->getType()) smallest = r;
         if (smallest == idx) break;
@@ -69,7 +73,9 @@ CircularQueue::CircularQueue() : front(0), rear(0), count(0) {
     for (int i = 0; i < MAX_OVERFLOW; ++i) arr[i] = nullptr;
 }
 
-// Enqueue: Add spectator to rear of the queue if not full
+// Adds a new spectator to the end (rear) of the overflow circular queue.
+// Like people joining the end of a waiting line for tickets. 
+// The queue wraps around to the start of the array if it reaches the end (circular buffer).
 bool CircularQueue::enqueue(Spectator* s) {
     if (count == MAX_OVERFLOW) return false;         // Queue is full
     arr[rear] = s;                                   // Add to rear
@@ -78,9 +84,10 @@ bool CircularQueue::enqueue(Spectator* s) {
     return true;
 }
 
-// Dequeue: Remove and return spectator from front of queue if not empty
+// Removes and returns the spectator at the front of the overflow queue (the one waiting the longest).
+// Like calling the next person forward from the front of the waiting line.
 Spectator* CircularQueue::dequeue() {
-    if (count == 0) return nullptr;                  // Queue is empty
+    if (count == 0) return nullptr;                  // Queue is empty, returns nullptr.
     Spectator* s = arr[front];
     arr[front] = nullptr;                            // Remove pointer
     front = (front + 1) % MAX_OVERFLOW;              // Move front forward (wrap around)

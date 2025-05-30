@@ -206,8 +206,9 @@ void runSpectatorSystem() {
     // Assign each streamer/influencer to a stream slot, if available
     std::cout << "\n--- Streaming Slot Assignment ---\n";
     for (int i = 0; i < seatCount; ++i) {
-        if (seats[i]->getType() == STREAMER) {
+        if (seats[i]->getType() == STREAMER && !seats[i]->getHasStreamingSlot()) {
             if (streamQueue.assignSlot(seats[i])) {
+                seats[i]->setHasStreamingSlot(true); // Set flag!
                 std::cout << seats[i]->getName() << " assigned to stream slot.\n";
             }
             else {
@@ -216,12 +217,28 @@ void runSpectatorSystem() {
         }
     }
 
+
     // --- Simulate releasing a stream slot ---
     std::cout << "\n--- Releasing a Stream Slot ---\n";
     Spectator* released = streamQueue.releaseSlot();
     if (released) {
+        released->setHasStreamingSlot(false); // Mark released streamer as not having a slot
         std::cout << released->getName() << "'s slot is now free.\n";
+        // Assign slot to next waiting streamer (who doesn't already have a slot)
+        for (int i = 0; i < seatCount; ++i) {
+            if (seats[i]->getType() == STREAMER &&
+                !seats[i]->getHasStreamingSlot() &&
+                seats[i] != released) {
+                if (streamQueue.assignSlot(seats[i])) {
+                    seats[i]->setHasStreamingSlot(true); // Mark as having a slot now
+                    std::cout << seats[i]->getName() << " assigned to stream slot (from waiting).\n";
+                    break;
+                }
+            }
+        }
     }
+
+
 
     // --- Demo: Simulate vacating seats, then fill from overflow ---
     std::cout << "\n--- Demo: Vacating Seats for Overflow ---\n";

@@ -16,6 +16,7 @@ protected:
     int spectatorID;
     std::string name;
     SpectatorType type; 
+    bool hasStreamingSlot;
 
 public:
     Spectator(int id, const std::string& name, SpectatorType type);
@@ -24,6 +25,10 @@ public:
     int getSpectatorID() const;
     std::string getName() const;
     SpectatorType getType() const;
+    bool getHasStreamingSlot() const;
+
+    // Setter
+    void setHasStreamingSlot(bool value);
 
     // Utility
     std::string getTypeAsString() const;

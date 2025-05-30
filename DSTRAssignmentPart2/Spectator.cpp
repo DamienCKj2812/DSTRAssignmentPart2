@@ -1,7 +1,7 @@
 #include "Spectator.hpp"
 
 Spectator::Spectator(int id, const std::string& name, SpectatorType type)
-    : spectatorID(id), name(name), type(type) {}
+    : spectatorID(id), name(name), type(type), hasStreamingSlot(false) {}
 
 int Spectator::getSpectatorID() const {
     return spectatorID;
@@ -13,6 +13,14 @@ std::string Spectator::getName() const {
 
 SpectatorType Spectator::getType() const {
     return type;
+}
+
+bool Spectator::getHasStreamingSlot() const {
+    return hasStreamingSlot;
+}
+
+void Spectator::setHasStreamingSlot(bool value) {
+    hasStreamingSlot = value;
 }
 
 std::string Spectator::getTypeAsString() const {
