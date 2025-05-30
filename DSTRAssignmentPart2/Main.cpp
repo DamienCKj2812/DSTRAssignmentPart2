@@ -246,15 +246,6 @@ void runSpectatorSystem() {
         }
     }
 
-    //// --- Fill any remaining open seats from the overflow queue (FIFO) ---
-    //std::cout << "\n--- Filling Seats from Overflow ---\n";
-    //while (seatCount < MAX_SEATS && !overflowQueue.empty()) {
-    //    seats[seatCount] = overflowQueue.dequeue();
-    //    std::cout << "Seat " << seatCount + 1 << ": (from overflow) ";
-    //    seats[seatCount]->display();
-    //    ++seatCount;
-    //}
-
     // --- Memory Cleanup (delete dynamically allocated spectators) ---
     for (int i = 0; i < arrivals.size(); ++i) delete arrivals[i];
 }
