@@ -89,7 +89,6 @@ public:
         return data.size();
     }
 
-    // Debug: print heap content
     void printHeap() const {
         std::cout << "Heap contents (by ranking):\n";
         for (int i = 0; i < data.size(); ++i) {

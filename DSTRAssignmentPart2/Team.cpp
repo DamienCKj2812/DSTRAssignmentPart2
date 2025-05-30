@@ -59,10 +59,10 @@ void Team::display() const {
 }
 
 int Team::getPlayerCount() const {
-    return players.size();  // Assuming players is Array<Player>
+    return players.size(); 
 }
 
 Player& Team::getPlayer(int index) {
-    return players.get(index);  // Assuming `players` is declared: Array<Player> players;
+    return players.get(index); 
 }
 

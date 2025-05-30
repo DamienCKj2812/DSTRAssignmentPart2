@@ -9,29 +9,25 @@
 std::string getPlayerNameWithHighlight(const std::string& playerName) {
     std::string highlights[] = {"got First Blood", "got Double Kill", "got Triple Kill" ,"got Quadra Kill","got Penta Kill!!!"};
     int roll = rand() % 5;
-    if (roll == 0) return playerName;  // No highlight
+    if (roll == 0) return playerName; 
     return playerName + " (" + highlights[roll] + ")";
 }
 
-// Default constructor
 Match::Match()
     : matchID(0), winner(nullptr), result("Not played"), stage(QUALIFIER) {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 }
 
-// Parameterized constructor
 Match::Match(int id, const Array<Team*>& teams, MatchStage stage)
     : matchID(id), teams(teams), winner(nullptr), result("Not played"), stage(stage) {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 }
 
-// Set result manually
 void Match::setResult(const std::string& matchResult) {
     result = matchResult;
 }
 
 // Simulate the match and log game results
-// Rename simulateMatch() → simulateTeamBattle()
 void Match::simulateTeamBattle() {
     if (teams.size() != 2) {
         result = "Match must have exactly two teams.";
@@ -47,7 +43,6 @@ void Match::simulateTeamBattle() {
 
     Array<GameResult> tempResults;
 
-    // Generate logs for both teams (outcome TBD for now)
     for (int i = 0; i < team1->getPlayerCount(); ++i) {
         Player& player = team1->getPlayer(i);
         int kills = rand() % 10 + 1;
@@ -58,7 +53,7 @@ void Match::simulateTeamBattle() {
 		 GameResult r(matchID, team1->getTeamName(),
 					 getPlayerNameWithHighlight(player.getName()),
 					 team1->getUniversity(), kills, assists, deaths,
-					 "", getCurrentTimeString()); // outcome to be set later
+					 "", getCurrentTimeString());
 		tempResults.push(r);
     }
 
@@ -72,7 +67,7 @@ void Match::simulateTeamBattle() {
 		 GameResult r(matchID, team1->getTeamName(),
 					 getPlayerNameWithHighlight(player.getName()),
 					 team1->getUniversity(), kills, assists, deaths,
-					 "", getCurrentTimeString()); // outcome to be set later
+					 "", getCurrentTimeString()); 
 		tempResults.push(r);
     }
 
@@ -80,7 +75,6 @@ void Match::simulateTeamBattle() {
     winner = (team1Score >= team2Score) ? team1 : team2;
     result = winner->getTeamName() + " won the match.";
 
-    // ✅ Now finalize outcome and push to logger
     for (int i = 0; i < tempResults.size(); ++i) {
         GameResult& r = tempResults.get(i);
         r.outcome = (r.teamName == winner->getTeamName()) ? "Win" : "Loss";
@@ -89,7 +83,6 @@ void Match::simulateTeamBattle() {
 }
 
 
-// Optional manual override
 void Match::setWinner(Team* t) {
     winner = t;
 }
